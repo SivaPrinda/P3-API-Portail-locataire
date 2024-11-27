@@ -1,14 +1,11 @@
 package com.openclassrooms.P3_API_Portail_locataire.controllers;
 
-import com.openclassrooms.P3_API_Portail_locataire.dto.LoginUserDTO;
-import com.openclassrooms.P3_API_Portail_locataire.dto.RegisterUserDTO;
+import com.openclassrooms.P3_API_Portail_locataire.dto.request.LoginUserDTO;
+import com.openclassrooms.P3_API_Portail_locataire.dto.request.RegisterUserDTO;
 import com.openclassrooms.P3_API_Portail_locataire.models.User;
-import com.openclassrooms.P3_API_Portail_locataire.services.UserService;
-import com.openclassrooms.P3_API_Portail_locataire.services.impl.JWTService;
+import com.openclassrooms.P3_API_Portail_locataire.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,28 +13,20 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @Autowired
-    private UserService userService;
-
-    private JWTService jwtService;
-
-    public AuthController(JWTService jwtService) {
-        this.jwtService = jwtService;
-    }
+    private IUserService iUserService;
 
     @PostMapping("/register")
     public ResponseEntity<String> signIn(@RequestBody RegisterUserDTO registerUser) {
-        User userRegister = new User();
-        userRegister.setPassword(registerUser.password());
-        userRegister.setEmail(registerUser.email());
-        userRegister.setName(registerUser.name());
-        return ResponseEntity.ok("User registered successfully");
+        return ResponseEntity.ok(iUserService.register(registerUser));
     }
 
     @PostMapping("/login")
-    public String signUp(@RequestBody LoginUserDTO loginUser) {
-        userService.loginUser(loginUser.email(), loginUser.password());
-        Authentication authentication = new UsernamePasswordAuthenticationToken(loginUser.email(), loginUser.password());
-        return jwtService.generateToken(authentication);
+    public ResponseEntity<String> signUp(@RequestBody LoginUserDTO loginUser) {
+        return ResponseEntity.ok(iUserService.login(loginUser));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<User> getConnectedUser() {
+        return ResponseEntity.ok(iUserService.getConnectedUser());
+    }
 }
