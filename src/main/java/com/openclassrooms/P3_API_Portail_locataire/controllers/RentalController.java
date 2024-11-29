@@ -30,7 +30,7 @@ public class RentalController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Rental getRental(@PathVariable("id") final Long id) {
+    public RentalDTO getRental(@PathVariable("id") final Long id) {
         return iRentalService.getRentalById(id);
     }
 
@@ -38,12 +38,12 @@ public class RentalController {
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<Rental> getRentals() {
+    public List<RentalDTO> getRentals() {
         return iRentalService.getAllRentals();
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> updateRental(@PathVariable("id") final Long id, @ModelAttribute RentalDTO rentalDto) {
+    public ResponseEntity<Object> updateRental(@PathVariable("id") final Long id, @ModelAttribute CreateRentalDTO rentalDto) {
         try {
             String updatedRental = iRentalService.updateRental(id, rentalDto);
             if (updatedRental != null) {

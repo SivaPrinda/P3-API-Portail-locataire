@@ -26,9 +26,9 @@ public class Rental {
     private int surface;
     @Column(name = "price")
     private double price;
-    @Column(name = "picture",columnDefinition = "MEDIUMBLOB")
+    @Column(name = "picture")
     @Lob
-    private byte[] picture;
+    private String picture;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
