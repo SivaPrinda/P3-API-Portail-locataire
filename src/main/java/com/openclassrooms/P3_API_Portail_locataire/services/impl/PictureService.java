@@ -40,7 +40,6 @@ public class PictureService implements IPictureService {
                 file.transferTo(pictureFile);
                 return picturesUrl + "/" + pictureFileName;
             } catch (Exception e) {
-                //logger.log("Failed to save picture");
                 throw new ResponseEntityException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save picture");
             }
         }
@@ -49,8 +48,6 @@ public class PictureService implements IPictureService {
 
     @Override
     public byte[] getPicture(String id) {
-
-        // Now that we have the picture ID, we can fetch the image
         File pictureFile = new File(picturesPath, id);
 
         // When picture is not found, we throw an exception which will be caught by exception handler

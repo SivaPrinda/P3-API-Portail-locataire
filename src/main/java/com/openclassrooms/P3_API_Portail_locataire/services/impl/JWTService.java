@@ -22,7 +22,7 @@ public class JWTService implements IJWTService {
     @Override
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();
-        // Create a token that contains email of the user as subject
+        // Create a token that contains mail of the user as subject
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
