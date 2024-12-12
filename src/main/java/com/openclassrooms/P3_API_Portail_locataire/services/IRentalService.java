@@ -1,6 +1,7 @@
 package com.openclassrooms.P3_API_Portail_locataire.services;
 
 import com.openclassrooms.P3_API_Portail_locataire.dto.request.CreateRentalDTO;
+import com.openclassrooms.P3_API_Portail_locataire.dto.request.UpdateRentalDTO;
 import com.openclassrooms.P3_API_Portail_locataire.dto.response.RentalDTO;
 import com.openclassrooms.P3_API_Portail_locataire.models.Rental;
 
@@ -11,7 +12,7 @@ public interface IRentalService {
 
     List<RentalDTO> getAllRentals();
     RentalDTO getRentalById(Long id);
-    Rental addRental(CreateRentalDTO rentalDto) throws IOException;
-    String updateRental(Long id, CreateRentalDTO rentalDto);
+    String addRental(CreateRentalDTO rentalDto) throws IOException;
+    String updateRental(Long id, UpdateRentalDTO rentalDto);
 
 }

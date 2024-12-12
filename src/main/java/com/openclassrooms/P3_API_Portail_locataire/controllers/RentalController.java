@@ -1,8 +1,10 @@
 package com.openclassrooms.P3_API_Portail_locataire.controllers;
 
 import com.openclassrooms.P3_API_Portail_locataire.dto.request.CreateRentalDTO;
+import com.openclassrooms.P3_API_Portail_locataire.dto.request.UpdateRentalDTO;
+import com.openclassrooms.P3_API_Portail_locataire.dto.response.ListRentalDTO;
+import com.openclassrooms.P3_API_Portail_locataire.dto.response.MessageDTO;
 import com.openclassrooms.P3_API_Portail_locataire.dto.response.RentalDTO;
-import com.openclassrooms.P3_API_Portail_locataire.models.Rental;
 import com.openclassrooms.P3_API_Portail_locataire.services.IRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,8 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/rentals")
@@ -22,9 +22,10 @@ public class RentalController {
     private IRentalService iRentalService;
 
     @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> createRental(@ModelAttribute CreateRentalDTO rentalRequestDTO) throws IOException {
+    public ResponseEntity<MessageDTO> createRental(@ModelAttribute CreateRentalDTO rentalRequestDTO) throws IOException {
+
         iRentalService.addRental(rentalRequestDTO);
-        return ResponseEntity.ok("Rental Created");
+        return ResponseEntity.ok(new MessageDTO("Rental created !"));
     }
 
     @GetMapping("/{id}")
@@ -38,22 +39,14 @@ public class RentalController {
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<RentalDTO> getRentals() {
-        return iRentalService.getAllRentals();
+    public ResponseEntity<ListRentalDTO> getRentals() {
+       return ResponseEntity.ok(new ListRentalDTO(iRentalService.getAllRentals()));
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> updateRental(@PathVariable("id") final Long id, @ModelAttribute CreateRentalDTO rentalDto) {
-        try {
-            String updatedRental = iRentalService.updateRental(id, rentalDto);
-            if (updatedRental != null) {
-                return new ResponseEntity<>(Collections.singletonMap("message", "Rental updated !"), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(Collections.singletonMap("error", "Rental not found"), HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(Collections.singletonMap("error", "Error while updating rental: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<MessageDTO> updateRental(@PathVariable("id") final Long id, @ModelAttribute UpdateRentalDTO rentalDto) {
+        iRentalService.updateRental(id, rentalDto);
+            return ResponseEntity.ok(new MessageDTO("Rental update !"));
     }
 
 }

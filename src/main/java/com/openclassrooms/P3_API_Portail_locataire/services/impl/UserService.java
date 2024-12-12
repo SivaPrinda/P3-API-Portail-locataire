@@ -3,6 +3,7 @@ package com.openclassrooms.P3_API_Portail_locataire.services.impl;
 import com.openclassrooms.P3_API_Portail_locataire.Exception.ResponseEntityException;
 import com.openclassrooms.P3_API_Portail_locataire.dto.request.LoginUserDTO;
 import com.openclassrooms.P3_API_Portail_locataire.dto.request.RegisterUserDTO;
+import com.openclassrooms.P3_API_Portail_locataire.dto.response.UserDTO;
 import com.openclassrooms.P3_API_Portail_locataire.models.User;
 import com.openclassrooms.P3_API_Portail_locataire.repositories.UserRepository;
 import com.openclassrooms.P3_API_Portail_locataire.services.IJWTService;
@@ -25,6 +26,16 @@ public class UserService implements IUserService {
     private final PasswordEncoder passwordEncoder;
     private final IJWTService jwtService;
 
+    private UserDTO mapToUserDTO(User user) {
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // When user is not found, we throw an exception which will be caught by exception handler
@@ -46,23 +57,28 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getConnectedUser() {
-        // To get connected user, we use the subject of the jwt token. It contains the email of the user
+    public UserDTO getConnectedUser() {
+        // To get connected user, we use the subject of the jwt token. It contains the mail of the user
         Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String subject = jwt.getSubject();
         // When user is not found, we throw an exception which will be caught by exception handler
-        return userRepository.findByEmail(subject).orElseThrow(() -> new ResponseEntityException(HttpStatus.UNAUTHORIZED, "User not found"));
+        User user = userRepository.findByEmail(subject).orElseThrow(() -> new ResponseEntityException(HttpStatus.UNAUTHORIZED, "User not found"));
+        // Map the User entity to UserDTO
+        return mapToUserDTO(user);
+
     }
 
     @Override
-    public User getUser(int id) {
+    public UserDTO getUser(Long id) {
         // When user is not found, we throw an exception which will be caught by exception handler
-        return userRepository.findById(id).orElseThrow(() -> new ResponseEntityException(HttpStatus.NOT_FOUND, "User %d not found", id));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResponseEntityException(HttpStatus.NOT_FOUND, "User %d not found", id));
+        // Map the User entity to UserDTO
+        return mapToUserDTO(user);
     }
 
     @Override
     public String login(LoginUserDTO login) {
-        // To make login action, first we find the user by email and then we check if the password is correct
+        // To make login action, first we find the user by mail and then we check if the password is correct
         // If nothing matches we throw an exception which will be caught by exception handler
         User loggedUser = userRepository.findByEmail(login.email())
             .filter(user -> passwordEncoder.matches(login.password(), user.getPassword()))
