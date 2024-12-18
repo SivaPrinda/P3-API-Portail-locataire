@@ -5,6 +5,7 @@ import com.openclassrooms.P3_API_Portail_locataire.dto.request.UpdateRentalDTO;
 import com.openclassrooms.P3_API_Portail_locataire.dto.response.ListRentalDTO;
 import com.openclassrooms.P3_API_Portail_locataire.dto.response.MessageDTO;
 import com.openclassrooms.P3_API_Portail_locataire.dto.response.RentalDTO;
+import com.openclassrooms.P3_API_Portail_locataire.models.Rental;
 import com.openclassrooms.P3_API_Portail_locataire.services.IRentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,20 @@ public class RentalController {
     @Autowired
     private IRentalService iRentalService;
 
+    private RentalDTO mapToRentalDTO(Rental rental) {
+        return new RentalDTO(
+                rental.getId(),
+                rental.getName(),
+                rental.getSurface(),
+                rental.getPrice(),
+                rental.getPicture(),
+                rental.getDescription(),
+                rental.getCreatedAt(),
+                rental.getUpdatedAt(),
+                rental.getOwner().getId()
+        );
+    }
+
     @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageDTO> createRental(@ModelAttribute CreateRentalDTO rentalRequestDTO) throws IOException {
 
@@ -32,7 +47,7 @@ public class RentalController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public RentalDTO getRental(@PathVariable("id") final Long id) {
-        return iRentalService.getRentalById(id);
+        return mapToRentalDTO(iRentalService.getRentalById(id));
     }
 
 

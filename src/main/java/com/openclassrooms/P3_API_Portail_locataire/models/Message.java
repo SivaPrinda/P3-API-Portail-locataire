@@ -18,15 +18,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Message {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String message;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     @ManyToOne
     @JoinColumn(name = "rental_id")
     private Rental rental;
@@ -34,6 +35,7 @@ public class Message {
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
+
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;

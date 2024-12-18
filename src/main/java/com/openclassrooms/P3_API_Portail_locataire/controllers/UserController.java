@@ -17,7 +17,16 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(iUserService.getUser(id));
+        return ResponseEntity.ok(mapToUserDTO(iUserService.getUser(id)));
     }
 
+    private UserDTO mapToUserDTO(User user) {
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+    }
 }

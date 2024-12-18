@@ -33,9 +33,11 @@ public class Rental {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
+
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
+
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
