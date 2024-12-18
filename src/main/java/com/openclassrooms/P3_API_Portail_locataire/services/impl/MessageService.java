@@ -31,15 +31,11 @@ public class MessageService implements IMessageService {
     public String saveMessage(CreateMessageDTO createMessageDto) {
         Message message = new Message();
 
-        UserDTO user = userService.getUser(createMessageDto.userId());
-        User connectedUser = userRepository.findById(user.id())
-                .orElseThrow(() -> new ResponseEntityException(HttpStatus.UNAUTHORIZED, "User not found"));
-        message.setUser(connectedUser);
+        User user = userService.getUser(createMessageDto.userId());
+        message.setUser(user);
 
-        RentalDTO rental = rentalService.getRentalById(createMessageDto.rentalId());
-        Rental selectedRental = rentalRepository.findById(rental.id())
-                .orElseThrow(() -> new ResponseEntityException(HttpStatus.UNAUTHORIZED, "Rental not found"));
-        message.setRental(selectedRental);
+        Rental rental = rentalService.getRentalById(createMessageDto.rentalId());
+        message.setRental(rental);
 
         message.setMessage(createMessageDto.message());
 

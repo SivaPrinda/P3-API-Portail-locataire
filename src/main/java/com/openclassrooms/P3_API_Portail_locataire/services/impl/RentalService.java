@@ -51,22 +51,20 @@ public class RentalService implements IRentalService {
     }
 
     @Override
-    public RentalDTO getRentalById(Long id) {
+    public Rental getRentalById(Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow(() ->
                 new ResponseEntityException(HttpStatus.NOT_FOUND, "Rental with id %d not found".formatted(id))
         );
-
-        return new RentalDTO(
-                rental.getId(),
-                rental.getName(),
-                rental.getSurface(),
-                rental.getPrice(),
-                rental.getPicture(),
-                rental.getDescription(),
-                rental.getCreatedAt(),
-                rental.getUpdatedAt(),
-                rental.getOwner().getId()
-        );
+                rental.getId();
+                rental.getName();
+                rental.getSurface();
+                rental.getPrice();
+                rental.getPicture();
+                rental.getDescription();
+                rental.getCreatedAt();
+                rental.getUpdatedAt();
+                rental.getOwner().getId();
+                return rental;
 
 
     }
@@ -79,10 +77,8 @@ public class RentalService implements IRentalService {
         rental.setSurface((int) rentalDto.surface());
         rental.setPrice(rentalDto.price());
         rental.setPicture(pictureService.savePicture(rentalDto.picture()));
-        UserDTO owner = userService.getConnectedUser();
-        User connectedUser = userRepository.findById(owner.id())
-                .orElseThrow(() -> new ResponseEntityException(HttpStatus.UNAUTHORIZED, "Connected user not found"));
-        rental.setOwner(connectedUser);
+        User owner = userService.getConnectedUser();
+        rental.setOwner(owner);
         rental = rentalRepository.save(rental);
         return rental.toString();
     }

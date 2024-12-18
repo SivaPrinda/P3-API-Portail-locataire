@@ -11,7 +11,7 @@ import java.util.List;
 public interface IRentalService {
 
     List<RentalDTO> getAllRentals();
-    RentalDTO getRentalById(Long id);
+    Rental getRentalById(Long id);
     String addRental(CreateRentalDTO rentalDto) throws IOException;
     String updateRental(Long id, UpdateRentalDTO rentalDto);
 

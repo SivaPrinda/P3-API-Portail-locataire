@@ -17,6 +17,16 @@ public class AuthController {
     @Autowired
     private IUserService iUserService;
 
+    private UserDTO mapToUserDTO(User user) {
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
+    }
+
     @PostMapping("/register")
     public ResponseEntity<TokenDTO> signIn(@RequestBody RegisterUserDTO registerUser) {
         return ResponseEntity.ok(new TokenDTO(iUserService.register(registerUser)));
@@ -29,6 +39,6 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getConnectedUser() {
-        return ResponseEntity.ok(iUserService.getConnectedUser());
+        return ResponseEntity.ok(mapToUserDTO(iUserService.getConnectedUser()));
     }
 }
