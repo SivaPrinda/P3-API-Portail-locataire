@@ -4,7 +4,6 @@ import com.openclassrooms.P3_API_Portail_locataire.Exception.ResponseEntityExcep
 import com.openclassrooms.P3_API_Portail_locataire.dto.request.CreateRentalDTO;
 import com.openclassrooms.P3_API_Portail_locataire.dto.request.UpdateRentalDTO;
 import com.openclassrooms.P3_API_Portail_locataire.dto.response.RentalDTO;
-import com.openclassrooms.P3_API_Portail_locataire.dto.response.UserDTO;
 import com.openclassrooms.P3_API_Portail_locataire.models.Rental;
 import com.openclassrooms.P3_API_Portail_locataire.models.User;
 import com.openclassrooms.P3_API_Portail_locataire.repositories.RentalRepository;
@@ -28,6 +27,11 @@ public class RentalService implements IRentalService {
     private final UserService userService;
     private final IPictureService pictureService;
 
+    /**
+     * Retrieves all rentals from the database and converts them to RentalDTO objects.
+     *
+     * @return A list of RentalDTO objects representing all rentals.
+     */
     @Override
     public List<RentalDTO> getAllRentals() {
         List<Rental> rentals = rentalRepository.findAll();
@@ -50,6 +54,13 @@ public class RentalService implements IRentalService {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Retrieves a rental by its ID.
+     *
+     * @param id The ID of the rental.
+     * @return The Rental entity.
+     * @throws ResponseEntityException If the rental is not found.
+     */
     @Override
     public Rental getRentalById(Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow(() ->
@@ -69,6 +80,12 @@ public class RentalService implements IRentalService {
 
     }
 
+    /**
+     * Adds a new rental.
+     *
+     * @param rentalDto Data transfer object containing rental creation details.
+     * @return A string representation of the created rental.
+     */
     @Override
     public String addRental(CreateRentalDTO rentalDto){
         Rental rental = new Rental();
@@ -83,6 +100,13 @@ public class RentalService implements IRentalService {
         return rental.toString();
     }
 
+    /**
+     * Updates an existing rental.
+     *
+     * @param id        The ID of the rental to update.
+     * @param rentalDto Data transfer object containing updated rental details.
+     * @return A string representation of the updated rental, or null if not found.
+     */
     @Override
     public String updateRental(Long id, UpdateRentalDTO rentalDto) {
         Optional<Rental> rentalOpt = rentalRepository.findById(id);

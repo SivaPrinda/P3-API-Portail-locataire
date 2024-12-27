@@ -24,32 +24,47 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
+    /**
+     * Configures the JwtDecoder bean for decoding and validating JWT tokens.
+     */
     @Bean
     public JwtDecoder jwtDecoder(@Value("${application.jwt.key}") String jwtKey) {
+        // Define the secret key and the algorithm used for JWT validation.
         SecretKeySpec secretKey = new SecretKeySpec(jwtKey.getBytes(), 0, jwtKey.getBytes().length, "RSA");
         return NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
     }
 
+    /**
+     * Configures the JwtEncoder bean for encoding JWT tokens.
+     */
     @Bean
     public JwtEncoder jwtEncoder(@Value("${application.jwt.key}") String jwtKey) {
         return new NimbusJwtEncoder(new ImmutableSecret<>(jwtKey.getBytes()));
     }
 
+    /**
+     * Configures the security filter chain.
+     * This defines security rules for HTTP requests and enables JWT-based security.
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF protection for stateless APIs.
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session management.
                 .authorizeHttpRequests(authorize -> authorize
+                        // Publicly accessible endpoints.
                         .requestMatchers("/api/auth/register", "/api/auth/login", "/api/pictures/{id}", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        // All other endpoints require authentication.
                         .anyRequest().authenticated())
-//                .anyRequest().permitAll())
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())) // Enable OAuth2 with JWT.
                 .build();
     }
 
+    /**
+     * Configures the PasswordEncoder bean for password hashing.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(); // Use BCrypt for secure password hashing.
     }
 }

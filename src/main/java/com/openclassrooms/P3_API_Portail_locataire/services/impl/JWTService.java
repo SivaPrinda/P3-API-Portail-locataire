@@ -19,6 +19,12 @@ public class JWTService implements IJWTService {
 
     private final JwtEncoder jwtEncoder;
 
+    /**
+     * Generates a JWT token for the authenticated user.
+     *
+     * @param authentication The Authentication object containing user details.
+     * @return A JWT token as a String.
+     */
     @Override
     public String generateToken(Authentication authentication) {
         Instant now = Instant.now();

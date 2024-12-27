@@ -25,6 +25,13 @@ public class UserService implements IUserService {
     private final PasswordEncoder passwordEncoder;
     private final IJWTService jwtService;
 
+    /**
+     * Loads user details by email (used as the username).
+     *
+     * @param username The email of the user to be loaded.
+     * @return UserDetails object containing user credentials and authorities.
+     * @throws UsernameNotFoundException If the user is not found.
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // When user is not found, we throw an exception which will be caught by exception handler
@@ -32,6 +39,12 @@ public class UserService implements IUserService {
             .orElseThrow(() -> new ResponseEntityException(HttpStatus.NOT_FOUND, "User %s not found", username));
     }
 
+    /**
+     * Registers a new user.
+     *
+     * @param registerUser The data transfer object containing registration details.
+     * @return A JWT token for the newly registered user.
+     */
     @Override
     public String register(RegisterUserDTO registerUser) {
         User user = new User();
@@ -45,6 +58,11 @@ public class UserService implements IUserService {
         ));
     }
 
+    /**
+     * Retrieves the currently authenticated user.
+     *
+     * @return The authenticated User entity.
+     */
     @Override
     public User getConnectedUser() {
         // To get connected user, we use the subject of the jwt token. It contains the mail of the user
@@ -57,6 +75,13 @@ public class UserService implements IUserService {
 
     }
 
+    /**
+     * Retrieves a user by their ID.
+     *
+     * @param id The ID of the user.
+     * @return The User entity.
+     * @throws ResponseEntityException If the user is not found.
+     */
     @Override
     public User getUser(Long id) {
         // When user is not found, we throw an exception which will be caught by exception handler
@@ -64,6 +89,13 @@ public class UserService implements IUserService {
 
     }
 
+    /**
+     * Authenticates a user with their email and password.
+     *
+     * @param login The login credentials (email and password).
+     * @return A JWT token if the login is successful.
+     * @throws ResponseEntityException If the credentials are invalid.
+     */
     @Override
     public String login(LoginUserDTO login) {
         // To make login action, first we find the user by mail and then we check if the password is correct

@@ -13,6 +13,14 @@ public class PictureController {
 
     private final IPictureService pictureService;
 
+    /**
+     * Retrieve a picture by its ID.
+     * Endpoint: GET /api/pictures/{id}
+     * Produces: JPEG or PNG image.
+     *
+     * @param id the ID of the picture to retrieve.
+     * @return a byte array representing the picture file.
+     */
     @Operation(
         summary = "Get picture",
         description = "Retrieve picture by id"
