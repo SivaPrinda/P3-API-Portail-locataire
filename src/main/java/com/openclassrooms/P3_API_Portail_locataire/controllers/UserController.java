@@ -15,11 +15,25 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
+    /**
+     * Retrieves a user by their ID.
+     * Endpoint: GET /api/user/{id}
+     *
+     * @param id the ID of the user to retrieve.
+     * @return a ResponseEntity containing the UserDTO with user details.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(mapToUserDTO(iUserService.getUser(id)));
     }
 
+    /**
+     * Converts a User entity to a UserDTO object.
+     * Used to structure and expose user data in a safe format.
+     *
+     * @param user the User entity to convert.
+     * @return a UserDTO containing the user's details.
+     */
     private UserDTO mapToUserDTO(User user) {
         return new UserDTO(
                 user.getId(),

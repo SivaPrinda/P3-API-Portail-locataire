@@ -25,6 +25,12 @@ public class PictureService implements IPictureService {
     @Value("${application.pictures.url}")
     private String picturesUrl;
 
+    /**
+     * Saves a picture to the file system.
+     *
+     * @param file The picture file uploaded by the user.
+     * @return The URL to access the saved picture.
+     */
     @Override
     public String savePicture(MultipartFile file) {
         File pictureFolder = new File(picturesPath);
@@ -46,6 +52,12 @@ public class PictureService implements IPictureService {
         throw new ResponseEntityException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to save picture");
     }
 
+    /**
+     * Retrieves a picture as a byte array.
+     *
+     * @param id The unique identifier of the picture (file name).
+     * @return The picture as a byte array.
+     */
     @Override
     public byte[] getPicture(String id) {
         File pictureFile = new File(picturesPath, id);

@@ -22,6 +22,13 @@ public class RentalController {
     @Autowired
     private IRentalService iRentalService;
 
+    /**
+     * Converts a Rental entity to a RentalDTO object.
+     * Used to expose rental data in a structured and safe format.
+     *
+     * @param rental the Rental object to map.
+     * @return a RentalDTO object containing rental details.
+     */
     private RentalDTO mapToRentalDTO(Rental rental) {
         return new RentalDTO(
                 rental.getId(),
@@ -36,6 +43,15 @@ public class RentalController {
         );
     }
 
+    /**
+     * Creates a new rental.
+     * Endpoint: POST /api/rentals
+     * Consumes: multipart/form-data (e.g., files and form data).
+     *
+     * @param rentalRequestDTO the details of the rental sent in the request body.
+     * @return a ResponseEntity containing a success message.
+     * @throws IOException if an error occurs while processing files.
+     */
     @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageDTO> createRental(@ModelAttribute CreateRentalDTO rentalRequestDTO) throws IOException {
 
@@ -43,6 +59,13 @@ public class RentalController {
         return ResponseEntity.ok(new MessageDTO("Rental created !"));
     }
 
+    /**
+     * Retrieves a rental by its ID.
+     * Endpoint: GET /api/rentals/{id}
+     *
+     * @param id the ID of the rental to retrieve.
+     * @return a RentalDTO object with the rental details.
+     */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -51,6 +74,12 @@ public class RentalController {
     }
 
 
+    /**
+     * Retrieves a list of all rentals.
+     * Endpoint: GET /api/rentals
+     *
+     * @return a ResponseEntity containing a ListRentalDTO with all rentals.
+     */
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -58,6 +87,15 @@ public class RentalController {
        return ResponseEntity.ok(new ListRentalDTO(iRentalService.getAllRentals()));
     }
 
+    /**
+     * Updates a rental by its ID.
+     * Endpoint: PUT /api/rentals/{id}
+     * Consumes: multipart/form-data (e.g., files and form data).
+     *
+     * @param id the ID of the rental to update.
+     * @param rentalDto the updated rental data sent in the request body.
+     * @return a ResponseEntity containing a success message.
+     */
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageDTO> updateRental(@PathVariable("id") final Long id, @ModelAttribute UpdateRentalDTO rentalDto) {
         iRentalService.updateRental(id, rentalDto);

@@ -18,14 +18,19 @@ public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "description")
     private String description;
+
     @Column(name = "surface")
     private int surface;
+
     @Column(name = "price")
     private double price;
+
     @Column(name = "picture")
     @Lob
     private String picture;
