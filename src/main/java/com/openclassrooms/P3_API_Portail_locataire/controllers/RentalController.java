@@ -23,27 +23,6 @@ public class RentalController {
     private IRentalService iRentalService;
 
     /**
-     * Converts a Rental entity to a RentalDTO object.
-     * Used to expose rental data in a structured and safe format.
-     *
-     * @param rental the Rental object to map.
-     * @return a RentalDTO object containing rental details.
-     */
-    private RentalDTO mapToRentalDTO(Rental rental) {
-        return new RentalDTO(
-                rental.getId(),
-                rental.getName(),
-                rental.getSurface(),
-                rental.getPrice(),
-                rental.getPicture(),
-                rental.getDescription(),
-                rental.getCreatedAt(),
-                rental.getUpdatedAt(),
-                rental.getOwner().getId()
-        );
-    }
-
-    /**
      * Creates a new rental.
      * Endpoint: POST /api/rentals
      * Consumes: multipart/form-data (e.g., files and form data).
@@ -52,7 +31,7 @@ public class RentalController {
      * @return a ResponseEntity containing a success message.
      * @throws IOException if an error occurs while processing files.
      */
-    @PostMapping(value="", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageDTO> createRental(@ModelAttribute CreateRentalDTO rentalRequestDTO) throws IOException {
 
         iRentalService.addRental(rentalRequestDTO);
@@ -102,4 +81,24 @@ public class RentalController {
             return ResponseEntity.ok(new MessageDTO("Rental update !"));
     }
 
+    /**
+     * Converts a Rental entity to a RentalDTO object.
+     * Used to expose rental data in a structured and safe format.
+     *
+     * @param rental the Rental object to map.
+     * @return a RentalDTO object containing rental details.
+     */
+    private RentalDTO mapToRentalDTO(Rental rental) {
+        return new RentalDTO(
+                rental.getId(),
+                rental.getName(),
+                rental.getSurface(),
+                rental.getPrice(),
+                rental.getPicture(),
+                rental.getDescription(),
+                rental.getCreatedAt(),
+                rental.getUpdatedAt(),
+                rental.getOwner().getId()
+        );
+    }
 }
