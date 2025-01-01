@@ -18,23 +18,6 @@ public class AuthController {
     private IUserService iUserService;
 
     /**
-     * Maps a User object to a UserDTO object.
-     * This is used to expose user data in a structured and secure format.
-     *
-     * @param user the User object to be mapped.
-     * @return a UserDTO object containing user information.
-     */
-    private UserDTO mapToUserDTO(User user) {
-        return new UserDTO(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getCreatedAt(),
-                user.getUpdatedAt()
-        );
-    }
-
-    /**
      * Registers a new user.
      * Endpoint: POST /api/auth/register
      *
@@ -67,5 +50,22 @@ public class AuthController {
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getConnectedUser() {
         return ResponseEntity.ok(mapToUserDTO(iUserService.getConnectedUser()));
+    }
+
+    /**
+     * Maps a User object to a UserDTO object.
+     * This is used to expose user data in a structured and secure format.
+     *
+     * @param user the User object to be mapped.
+     * @return a UserDTO object containing user information.
+     */
+    private UserDTO mapToUserDTO(User user) {
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
     }
 }

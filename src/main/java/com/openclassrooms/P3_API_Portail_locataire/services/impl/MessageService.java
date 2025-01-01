@@ -17,12 +17,6 @@ public class MessageService implements IMessageService {
     private final UserService userService;
     private final RentalService rentalService;
 
-    /**
-     * Saves a new message to the database.
-     *
-     * @param createMessageDto The DTO containing message creation details.
-     * @return A string representation of the saved message.
-     */
     @Override
     public String saveMessage(CreateMessageDTO createMessageDto) {
         // Create a new Message entity.
