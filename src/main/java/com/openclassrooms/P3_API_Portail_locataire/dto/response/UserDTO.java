@@ -15,7 +15,7 @@ public record UserDTO(
         String name,
 
         @Schema(description = "User email")
-        String mail,
+        String email,
 
         @Schema(description = "User creation date")
         @JsonProperty("created_at")
