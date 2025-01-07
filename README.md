@@ -13,32 +13,68 @@ Ensure the following are installed on your system:
 
 1. **Java 17 or Higher**  
    Check your Java version:
+```
    java -version
-
+```
 2. Maven
    Install Maven and verify its version:
+```
    mvn -version
+```
 
 3. Git
    Clone the project repository with Git:
+```
    git clone https://github.com/your-repo/P3_API_Portail_locataire.git
+```
 
 4. MySQL Database
    Set up a MySQL server
    Run the file "src/main/resources/db/script.sql" to create a database for the project.
 
+## Create a .env File
+Before running the project, you need to create a .env file that contains the environment variables for your application. This file should be placed at the root of the project directory.
+
+Create a .env file
+At the root of the project, create a file named .env.
+
+Add the following variables to the .env file
+Here is an example configuration. Replace the values with your own environment settings:
+
+```
+# Application Configuration
+SPRING_APPLICATION_NAME=P3-API-Portail-locataire
+SERVER_PORT=3001
+
+# JWT Configuration
+APPLICATION_JWT_KEY=yourjwtkey
+
+# Database Configuration
+SPRING_DATASOURCE_URL=yourdburl
+SPRING_DATASOURCE_USERNAME=yourdbusername
+SPRING_DATASOURCE_PASSWORD=yourdbpassword
+SPRING_DATASOURCE_DRIVER_CLASS_NAME=yourdriverclassname
+
+# Pictures Configuration
+APPLICATION_PICTURES_PATH=/your/picture/path/file/name
+APPLICATION_PICTURES_URL=/your/picture/url
+
+# Swagger Configuration
+SPRINGDOC_SWAGGER_UI_ENABLED=true
+```
 ## Build and Run
 
 Go inside the project:
-
-cd P3-API-Portail-locataire
-
+```
+   cd P3-API-Portail-locataire
+```
 Run the following command to build and run the project:
-
-mvn clean install
-
-mvn spring-boot:run
-
+```
+   mvn clean install
+```
+```
+   mvn spring-boot:run
+```
 ## API Documentation
 
 This project includes an auto-generated Swagger UI for testing and exploring the API.
